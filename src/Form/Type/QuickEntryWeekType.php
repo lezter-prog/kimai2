@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -91,6 +92,13 @@ final class QuickEntryWeekType extends AbstractType
             $event->getForm()->add('activity', ActivityType::class, $activityOptions);
         };
         $builder->addEventListener(FormEvents::PRE_SUBMIT, $activityPreSubmitFunction);
+        $descriptionOptions = [
+            'label' => false,
+            'required' => false,
+            'attr' => array('style' => 'width: 180px')
+        ];
+
+        $builder->add('description', TextType::class, $descriptionOptions);
 
         $builder->add('timesheets', CollectionType::class, [
             'entry_type' => QuickEntryTimesheetType::class,
@@ -124,6 +132,7 @@ final class QuickEntryWeekType extends AbstractType
 
                 $project = $transformValue->getProject();
                 $activity = $transformValue->getActivity();
+                $description =  $transformValue->getDescription();
 
                 // this case needs to be handled by the validator
                 if ($project === null || $activity === null) {
@@ -138,6 +147,7 @@ final class QuickEntryWeekType extends AbstractType
                     $timesheet->setUser($user);
                     $timesheet->setProject($project);
                     $timesheet->setActivity($activity);
+                    $timesheet->setDescription($description);
                 }
 
                 return $transformValue;
@@ -158,6 +168,7 @@ final class QuickEntryWeekType extends AbstractType
                 $user = $data->getUser();
                 $project = $data->getProject();
                 $activity = $data->getActivity();
+                $description = $data->getDescription();
 
                 foreach ($newRecords as $record) {
                     if ($user !== null) {
@@ -168,6 +179,9 @@ final class QuickEntryWeekType extends AbstractType
                     }
                     if ($activity !== null) {
                         $record->setActivity($activity);
+                    }
+                    if($description !== null){
+                        $record->setDescription($description);
                     }
                 }
             }

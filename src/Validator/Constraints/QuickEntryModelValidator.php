@@ -47,6 +47,13 @@ final class QuickEntryModelValidator extends ConstraintValidator
                     ->setCode(QuickEntryModelConstraint::PROJECT_REQUIRED)
                     ->addViolation();
             }
+
+            if ($model->getDescription() === null || $model->getDescription() === "") {
+                $this->context->buildViolation($constraint->messageDescriptionRequired)
+                    ->atPath('description')
+                    ->setCode(QuickEntryModelConstraint::DESCRIPTION_REQUIRED)
+                    ->addViolation();
+            }
         }
     }
 }

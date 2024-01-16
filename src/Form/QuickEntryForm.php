@@ -44,12 +44,14 @@ final class QuickEntryForm extends AbstractType
                 foreach ($value->getRows() as $row) {
                     $project = $row->getProject();
                     $activity = $row->getActivity();
+                    $description =  $row->getDescription();
                     if ($project === null || $activity === null) {
                         continue;
                     }
                     foreach ($row->getTimesheets() as $timesheet) {
                         $timesheet->setProject($project);
                         $timesheet->setActivity($activity);
+                        $timesheet->setDescription($description);
                     }
                 }
 

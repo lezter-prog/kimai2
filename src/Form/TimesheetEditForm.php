@@ -131,7 +131,7 @@ class TimesheetEditForm extends AbstractType
             // 'allow_create' => $allowCreate && $options['create_activity'],
         ]);
 
-        $descriptionOptions = ['required' => false];
+        $descriptionOptions = ['required' => true];
         if (!$isNew) {
             $descriptionOptions['attr'] = ['autofocus' => 'autofocus'];
         }

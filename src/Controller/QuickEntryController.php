@@ -86,7 +86,8 @@ final class QuickEntryController extends AbstractController
                 $rows[$id] = [
                     'days' => $week,
                     'project' => $timesheet->getProject(),
-                    'activity' => $timesheet->getActivity()
+                    'activity' => $timesheet->getActivity(),
+                    'description'=>$timesheet->getDescription(),
                 ];
             }
 
@@ -117,7 +118,8 @@ final class QuickEntryController extends AbstractController
             $rows[$id] = [
                 'days' => $week,
                 'project' => $timesheet->getProject(),
-                'activity' => $timesheet->getActivity()
+                'activity' => $timesheet->getActivity(),
+                'description'=>$timesheet->getDescription(),
             ];
         }
 
@@ -129,13 +131,14 @@ final class QuickEntryController extends AbstractController
         $formModel = new QuickEntryWeek($startWeek);
 
         foreach ($rows as $id => $row) {
-            $model = $formModel->addRow($user, $row['project'], $row['activity']);
+            $model = $formModel->addRow($user, $row['project'], $row['activity'],$row['description']);
             foreach ($row['days'] as $dayId => $day) {
                 if (!\array_key_exists('entry', $day)) {
                     // fill all rows and columns to make sure we do not have missing records
                     $tmp = $this->timesheetService->createNewTimesheet($user);
                     $tmp->setProject($row['project']);
                     $tmp->setActivity($row['activity']);
+                    $tmp->setDescription($row['description']);
                     $tmp->setBegin(clone $day['day']);
                     $tmp->getBegin()->setTime($defaultHour, $defaultMinute, 0, 0);
                     $this->timesheetService->prepareNewTimesheet($tmp);

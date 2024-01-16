@@ -25,7 +25,7 @@ class QuickEntryModel
      */
     private array $timesheets = [];
 
-    public function __construct(private ?User $user = null, private ?Project $project = null, private ?Activity $activity = null)
+    public function __construct(private ?User $user = null, private ?Project $project = null, private ?Activity $activity = null,private ?string $description = null)
     {
     }
 
@@ -62,6 +62,16 @@ class QuickEntryModel
     public function setActivity(?Activity $activity): void
     {
         $this->activity = $activity;
+    }
+    
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     public function hasExistingTimesheet(): bool
